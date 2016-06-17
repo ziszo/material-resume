@@ -18118,21 +18118,50 @@ Configuration:
 				float: left;
 			}
 
+  #mainContainer ::-webkit-scrollbar {
+    height: 16px;
+    overflow: visible;
+    width: 16px;
+  }
+
+  #mainContainer ::-webkit-scrollbar-button {
+    height: 0;
+    width: 0;
+  }
+
+  #mainContainer ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  #mainContainer ::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,.2);
+    background-clip: padding-box;
+    border: solid transparent;
+    border-width: 1px 1px 1px 6px;
+    min-height: 28px;
+    padding: 100px 0 0;
+    -webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07);
+    box-shadow: inset 1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07);
+  }
+
+  #mainContainer ::-webkit-scrollbar-track {
+    background-clip: padding-box;
+    border: solid transparent;
+    border-width: 0 0 0 4px;
+  }
+
 			.content {
 				margin: 0 auto;
 				width: 75%;
 				padding: 5px;
 				box-sizing: border-box;
 
-				-webkit-column-count: 3;
 				-webkit-column-gap: 10px;
-				-webkit-column-fill: auto;
-				-moz-column-count: 3;
+				-webkit-column-fill: balance !important;
 				-moz-column-gap: 10px;
-				-moz-column-fill: auto;
-				column-count: 3;
+				-moz-column-fill: balance !important;
 				column-gap: 10px;
-				column-fill: auto;
+				column-fill: balance !important;
 
 				-webkit-transition: all 0.5s ease;
 				-o-transition: all 0.5s ease;
@@ -18150,59 +18179,16 @@ Configuration:
 			}
 			@media all and (min-width: 701px) and (max-width: 800px) {
 				.content {
-					-webkit-column-count: 2;
-					-webkit-column-gap: 10px;
-					-webkit-column-fill: auto;
-					-moz-column-count: 2;
-					-moz-column-gap: 10px;
-					-moz-column-fill: auto;
-					column-count: 2;
-					column-gap: 10px;
-					column-fill: auto;
+					-webkit-column-count: 3;
+					-moz-column-count: 3;
+					column-count: 3;
 				}
 			}
-			@media all and (min-width: 642px) and (max-width: 700px) {
+			@media all and (max-width: 700px) {
 				.content {
 					-webkit-column-count: 1;
-					-webkit-column-gap: 10px;
-					-webkit-column-fill: auto;
 					-moz-column-count: 1;
-					-moz-column-gap: 10px;
-					-moz-column-fill: auto;
 					column-count: 1;
-					column-gap: 10px;
-					column-fill: auto;
-				}
-			}
-			@media all and (min-width: 450px) and (max-width: 641px) {
-				.content {
-					-webkit-column-count: 2;
-					-webkit-column-gap: 10px;
-					-webkit-column-fill: auto;
-					-moz-column-count: 2;
-					-moz-column-gap: 10px;
-					-moz-column-fill: auto;
-					column-count: 2;
-					column-gap: 10px;
-					column-fill: auto;
-				}
-			}
-			@media all and (max-width: 449px) {
-				.content {
-					-webkit-column-count: 1;
-					-webkit-column-gap: 10px;
-					-webkit-column-fill: auto;
-					-moz-column-count: 1;
-					-moz-column-gap: 10px;
-					-moz-column-fill: auto;
-					column-count: 1;
-					column-gap: 10px;
-					column-fill: auto;
-				}
-			}
-			@media all and (max-width: 641px) {
-				.quoteContainer {
-					display: none;
 				}
 			}
 
@@ -18302,6 +18288,9 @@ Configuration:
 				.resume-header.hdrawer {
 					height: 120px;
 					/*background-color: var(--accent-color);*/
+				}
+				.quoteContainer {
+					display: none;
 				}
 			}
 			
@@ -18599,7 +18588,7 @@ the version of myself is my greatest desire.
 		<style>
 			:host {
 				height: 5px;
-				width: 50%;
+				width: 100%;
 				display: block;
 				background-color: var(--light-accent-color);
 				-webkit-transition: all 0.5s ease;
@@ -18609,7 +18598,6 @@ the version of myself is my greatest desire.
 
 			#rating {
 				height: 100%;
-				width: 0;
 				background-color: var(--dark-accent-color);
 				-webkit-transition: all 0.5s ease;
 				-o-transition: all 0.5s ease;
@@ -18634,7 +18622,7 @@ the version of myself is my greatest desire.
 			}
 		</style>
 
-		<div id="rating" style="width: {{rating}}% !important;"></div>
+		<div id="rating" style$="width: {{rating}}%;"></div>
 		
 	</template>
 	<script>
