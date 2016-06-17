@@ -42,23 +42,16 @@
 
 			.content {
 				margin: 0 auto;
-				width: 75%;
+				width: 60%;
 				padding: 5px;
 				box-sizing: border-box;
-
-				-webkit-column-gap: 10px;
-				-webkit-column-fill: balance !important;
-				-moz-column-gap: 10px;
-				-moz-column-fill: balance !important;
-				column-gap: 10px;
-				column-fill: balance !important;
 
 				-webkit-transition: all 0.5s ease;
 				-o-transition: all 0.5s ease;
 				transition: all 0.5s ease;
 			}
 
-			@media all and (max-width: 1079px) {
+			@media all and (max-width: 800px) {
 				.content {
 					width: calc(100% - 20px);
 				}
@@ -121,8 +114,8 @@
 				@apply(--layout-center-center);
 			}
 			.resume-header.hmain .quote-container {
-				width: 75%;
-				padding: 10px;
+				width: 60%;
+				padding: 5px;
 				box-sizing: border-box;
 				font-size: 18px;
 				-webkit-transition: all 0.5s ease;

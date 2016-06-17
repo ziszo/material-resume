@@ -18152,23 +18152,16 @@ Configuration:
 
 			.content {
 				margin: 0 auto;
-				width: 75%;
+				width: 60%;
 				padding: 5px;
 				box-sizing: border-box;
-
-				-webkit-column-gap: 10px;
-				-webkit-column-fill: balance !important;
-				-moz-column-gap: 10px;
-				-moz-column-fill: balance !important;
-				column-gap: 10px;
-				column-fill: balance !important;
 
 				-webkit-transition: all 0.5s ease;
 				-o-transition: all 0.5s ease;
 				transition: all 0.5s ease;
 			}
 
-			@media all and (max-width: 1079px) {
+			@media all and (max-width: 800px) {
 				.content {
 					width: calc(100% - 20px);
 				}
@@ -18231,8 +18224,8 @@ Configuration:
 				@apply(--layout-center-center);
 			}
 			.resume-header.hmain .quote-container {
-				width: 75%;
-				padding: 10px;
+				width: 60%;
+				padding: 5px;
 				box-sizing: border-box;
 				font-size: 18px;
 				-webkit-transition: all 0.5s ease;
@@ -18690,7 +18683,7 @@ the version of myself is my greatest desire.
 				<template is="dom-repeat" items="{{xpInfo.skills}}">
 					<div class="skill-container">
 						<div class="skill"> {{item.skill}}</div>
-						<skill-rating rating="{{item.rating}}"></skill-rating>
+						<skill-rating rating="{{item.rating}}" title$="{{item.skill}}"></skill-rating>
 					</div>
 				</template>
 			</div>

@@ -86,7 +86,7 @@
 				<template is="dom-repeat" items="{{xpInfo.skills}}">
 					<div class="skill-container">
 						<div class="skill"> {{item.skill}}</div>
-						<skill-rating rating="{{item.rating}}"></skill-rating>
+						<skill-rating rating="{{item.rating}}" title$="{{item.skill}}"></skill-rating>
 					</div>
 				</template>
 			</div>
