@@ -1,0 +1,53 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="skill-rating">
+	<template>
+		<style>
+			:host {
+				height: 5px;
+				width: 100%;
+				display: block;
+				background-color: var(--light-accent-color);
+				-webkit-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+			}
+
+			#rating {
+				height: 100%;
+				background-color: var(--dark-accent-color);
+				-webkit-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+			}
+
+			@media all and (min-width: 826px) {
+				:host {
+					width: 60%;
+				}
+			}
+			
+			@media all and (min-width: 641px) and (max-width: 699px) {
+				:host {
+					width: 70%;
+				}
+			}
+			@media all and (max-width: 499px) {
+				:host {
+					width: 70%;
+				}
+			}
+		</style>
+
+		<div id="rating" style$="width: {{rating}}%;"></div>
+		
+	</template>
+	<script>
+		Polymer({
+			is: 'skill-rating',
+			properties: {
+				rating: Number
+			}
+		});
+	</script>
+</dom-module>

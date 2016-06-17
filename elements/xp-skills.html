@@ -1,0 +1,124 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="xp-skills">
+	<template>
+		<style>
+			:host {
+				width: 100%;
+				display: inline-block;
+				
+				-webkit-transition: all .2s ease;
+				-moz-transition: all .2s ease;
+				-o-transition: all .2s ease;
+				transition: all .2s ease;
+			}
+
+			.whole-container {
+				padding: 5px;
+				box-sizing: border-box;
+			}
+
+			.timeframe {
+				color: var(--secondary-text-color);
+				margin: 5px 0;
+				font-size: 12px;
+				padding: 5px 10px;
+			}
+
+			.main-container {
+				background-color: white;
+				border-radius: 2px;
+				overflow: hidden;
+			}
+			.experience {
+				background-color: var(--default-primary-color);
+				padding: 10px;
+				box-sizing: border-box;
+			}
+			.position {
+				color: var(--dark-accent-color);
+				font-size: 14px;
+				font-weight: bold;
+			}
+			.company {
+				color: var(--dark-accent-color);
+				font-size: 12px;
+				margin-top: 5px;
+			}
+
+			.skills {
+				width: 100%;
+				float: left;
+				font-size: 12px;
+				padding: 10px;
+				box-sizing: border-box;
+			}
+			.skill-container {
+				width: 100%;
+				padding: 2px 0;
+				box-sizing: border-box;
+				float: left;
+				clear: both;
+
+				@apply(--layout);
+				@apply(--layout-horizontal);
+				@apply(--layout-center-center);
+			}
+			.skill-container .skill {
+				width: 50%;
+				-webkit-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+			}
+			.skill-container > * {
+				float: left;
+			}
+
+			@media all and (min-width: 751px) and (max-width: 825px) {
+				.skill-container .skill {
+					width: 60%;
+				}
+			}
+			@media all and (min-width: 641px) and (max-width: 699px) {
+				.skill-container .skill {
+					width: 30%;
+				}
+			}
+			@media all and (max-width: 499px) {
+				.skill-container .skill {
+					width: 30%;
+				}
+			}
+		</style>
+
+	<div class="whole-container">
+		<div class="timeframe"> {{xpInfo.timeframe}} </div>
+		<paper-material class="main-container" elevation="2">
+			<div class="experience">
+				<div class="position"> {{xpInfo.position}} </div>
+				<div class="company"> {{xpInfo.company}} </div>
+			</div>
+			<div class="skills">
+				<template is="dom-repeat" items="{{xpInfo.skills}}">
+					<div class="skill-container">
+						<div class="skill"> {{item.skill}}</div>
+						<skill-rating rating="{{item.rating}}"></skill-rating>
+					</div>
+				</template>
+			</div>
+		</paper-material>
+	</div>
+		
+	</template>
+	<script>
+		Polymer({
+			is: 'xp-skills',
+			properties: {
+				xpInfo: {
+					type: Object,
+					value: null
+				}
+			}
+		});
+	</script>
+</dom-module>

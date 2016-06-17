@@ -1,0 +1,476 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="resume-body">
+	<template>
+		<style>
+			:host {
+				display: block;
+				float: left;
+			}
+
+  #mainContainer ::-webkit-scrollbar {
+    height: 16px;
+    overflow: visible;
+    width: 16px;
+  }
+
+  #mainContainer ::-webkit-scrollbar-button {
+    height: 0;
+    width: 0;
+  }
+
+  #mainContainer ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  #mainContainer ::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,.2);
+    background-clip: padding-box;
+    border: solid transparent;
+    border-width: 1px 1px 1px 6px;
+    min-height: 28px;
+    padding: 100px 0 0;
+    -webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07);
+    box-shadow: inset 1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07);
+  }
+
+  #mainContainer ::-webkit-scrollbar-track {
+    background-clip: padding-box;
+    border: solid transparent;
+    border-width: 0 0 0 4px;
+  }
+
+			.content {
+				margin: 0 auto;
+				width: 75%;
+				padding: 5px;
+				box-sizing: border-box;
+
+				/*-webkit-column-gap: 10px;
+				-webkit-column-fill: balance !important;
+				-moz-column-gap: 10px;
+				-moz-column-fill: balance !important;
+				column-gap: 10px;
+				column-fill: balance !important;*/
+
+				-webkit-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+			}/*
+
+			@media all and (max-width: 1079px) {
+				.content {
+					width: calc(100% - 20px);
+				}
+				.resume-header.hmain .quote-container {
+					width: 100% !important;
+					padding: 25px !important;
+				}
+			}
+			@media all and (min-width: 701px) and (max-width: 800px) {
+				.content {
+					-webkit-column-count: 3;
+					-moz-column-count: 3;
+					column-count: 3;
+				}
+			}
+			@media all and (max-width: 700px) {
+				.content {
+					-webkit-column-count: 1;
+					-moz-column-count: 1;
+					column-count: 1;
+				}
+			}*/
+
+			#resumeDrawer {
+				@apply(--shadow-elevation-8dp);
+			}
+			#mainHeader {
+				-webkit-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+
+				@apply(--shadow-elevation-1dp);
+			}
+			.resume-header {
+				height: 100px;
+
+				@apply(--layout);
+				@apply(--layout-vertical);
+				@apply(--layout-center-center);
+			}
+			.resume-header.hdrawer {
+				width: 100%;
+				background-color: var(--dark-accent-color);
+				background-size: cover;
+				filter: blur(100%);
+				font-size: 16px;
+				padding-right: 10px;
+				box-sizing: border-box;
+				height: 100px;
+				text-align: right;
+				position: relative;
+
+				z-index: 2;
+
+				-webkit-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+
+				@apply(--layout);
+				@apply(--layout-vertical);
+				@apply(--layout-end);
+			}
+			.resume-header.hdrawer .personsname {
+				text-align: right;
+				padding-right: 10px;
+				box-sizing: border-box;
+			}
+			.resume-header.hmain {
+				color: white;
+				background-color: var(--dark-accent-color);
+
+				@apply(--layout);
+				@apply(--layout-vertical);
+				@apply(--layout-center-center);
+			}
+			.resume-header.hmain .quote-container {
+				width: 75%;
+				padding: 10px;
+				box-sizing: border-box;
+				font-size: 18px;
+				-webkit-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+			}
+			@media all and (max-width: 700px) {
+				.resume-header.hmain .quote-container {
+					font-size: 16px;
+				}
+			}
+
+			.mobile-header {
+				display: none;
+				width: 100%;
+				padding: 0 0 0 20px;
+				box-sizing: border-box;
+			}
+			.screen-l {
+				display: block;
+			}
+			.screen-s {
+				display: none;
+			}
+			@media all and (max-width: 641px) {
+				.screen-l {
+					display: none;
+				}
+				.screen-s {
+					display: block;
+				}
+				.mobile-header {
+					display: block;
+					line-height: 42px;
+				}
+				#mainHeader {
+					height: 42px;
+				}
+				.resume-header.hdrawer {
+					height: 120px;
+					/*background-color: var(--accent-color);*/
+				}
+				.quoteContainer {
+					display: none;
+				}
+			}
+			
+			#dropShadow {
+				display: none;
+			}
+
+			.float.left {
+				float: left;
+
+				@apply(--layout);
+				@apply(--layout-horizontal);
+				@apply(--layout-center-center);
+			}
+			.float.right {
+				float: right;
+			}
+
+			quote {
+				font-size: 30px;
+			}
+			.quote-mobile {
+				height: 80px;
+				color: white;
+				font-size: 11px;
+				padding: 10px 0 10px 10px;
+				box-sizing: border-box;
+			    clear: both;
+			    text-align: justify;
+			}
+			.default-color {
+				color: var(--default-primary-color);
+			}
+
+			.quote-back {
+				color: white;
+				width: 100%;
+				height: 100%;
+				clear: both;
+			}
+			.identity-container {
+				width: 100%;
+			}
+			diamond-picture {
+				float: left;
+				margin-top: 10px;
+				margin-left: 25px;
+
+				-webkit-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+			}
+
+			.drawer-content {
+				width: 100%;
+				padding: 10px;
+				box-sizing: border-box;
+			}
+
+			@media all and (min-width: 642px) {
+				.identity-container .name {
+					font-size: 20px;
+					font-weight: bold;
+					width: 100%;
+					line-height: 100px;
+				}
+				diamond-picture {
+					position: absolute;
+					right: 216px;
+					top: 10px;
+					margin-top: 50px;
+					-webkit-transform: scaleX(100deg);
+				}
+			}
+
+			@media all and (max-width: 641px) {
+				.identity-container .name {
+					font-size: 18px;
+					font-weight: bold;
+					width: auto;
+					position: relative;
+					margin-top: -10px;
+				}
+			}
+
+			.float.left img {
+				width: 30px;
+				height: 30px;
+				margin-right: 5px;
+			}
+		</style>
+
+		<paper-drawer-panel right-drawer>
+			<paper-header-panel id="resumeDrawer" drawer>
+				<paper-toolbar class="resume-header hdrawer">
+					<div class="quote-back">
+						<div class="quote-mobile screen-s">
+							To be in an environment where I can upgrade
+the version of myself is my greatest desire.
+						</div>
+						<div class="identity-container">
+							<diamond-picture></diamond-picture>
+							<div class="name default-color">
+								<div class="text-container">Niño Angelo Lapura</div>
+							</div>
+						</div>
+					</div>
+				</paper-toolbar>
+
+				<div class="drawer-content">
+					<info-container></info-container>
+				</div>
+				
+			</paper-header-panel>
+			<paper-header-panel main>
+				<paper-toolbar id="mainHeader" class="resume-header hmain">
+					<div class="quote-container screen-l">
+						To be in an environment where I can upgrade
+the version of myself is my greatest desire.
+					</div>
+					<div class="mobile-header screen-s">
+						<div class="float left">
+							<img src="../images/nino.png">
+							Niño Angelo Lapura
+						</div>
+						<paper-icon-button class="float right" icon="menu" paper-drawer-toggle></paper-icon-button>
+					</div>
+				</paper-toolbar>
+
+				<div class="content">
+					<template is="dom-repeat" items="{{xpSkills}}">
+						<xp-skills xp-info="{{item}}"></xp-skills>
+					</template>
+				</div>
+			</paper-header-panel>
+		</paper-drawer-panel>
+		
+	</template>
+	<script>
+		Polymer({
+			is: 'resume-body',
+			properties: {
+				xpSkills: {
+					type: Array,
+					value:  [
+					{
+						"timeframe": "Sep 2015 - Mar 2016",
+						"position": "Front End Developer",
+						"company": "Shopstyx.com (Freelance)",
+						"skills": [
+							{
+								"skill": "Polymer",
+								"rating": 70
+							},
+							{
+								"skill": "CSS",
+								"rating": 85
+							},
+							{
+								"skill": "HTML",
+								"rating": 85
+							},
+							{
+								"skill": "JavaScript",
+								"rating": 75
+							},
+							{
+								"skill": "JSON",
+								"rating": 70
+							},
+						]
+					},
+					{
+						"timeframe": "Jun 2015 - Aug 2015",
+						"position": "Newswriter",
+						"company": "Freelance",
+						"skills": [
+							{
+								"skill": "Writing",
+								"rating": 75
+							},
+							{
+								"skill": "Office Apps",
+								"rating": 85
+							}
+						]
+					},
+					{
+						"timeframe": "Sep 2014 - Mar 2015",
+						"position": "Business Systems Programmer/Analyst",
+						"company": "Iligan Light & Power, Inc.",
+						"skills": [
+							{
+								"skill": "Delphi",
+								"rating": 70
+							},
+							{
+								"skill": "CSS",
+								"rating": 80
+							},
+							{
+								"skill": "HTML",
+								"rating": 80
+							},
+							{
+								"skill": "JavaScript",
+								"rating": 70
+							},
+							{
+								"skill": "PHP",
+								"rating": 70
+							},
+							{
+								"skill": "JSP",
+								"rating": 40
+							},
+							{
+								"skill": "MSSQL",
+								"rating": 60
+							},
+							{
+								"skill": "MySQL",
+								"rating": 65
+							},
+							{
+								"skill": "PostgreSQL",
+								"rating": 65
+							},
+							{
+								"skill": "GIMP",
+								"rating": 90
+							},
+							{
+								"skill": "Photoshop",
+								"rating": 90
+							}
+						]
+					},
+					{
+						"timeframe": "Nov 2013 - Mar 2014",
+						"position": "On-the-Job Trainee",
+						"company": "Iligan Light & Power, Inc.",
+						"skills": [
+							{
+								"skill": "CSS",
+								"rating": 70
+							},
+							{
+								"skill": "HTML",
+								"rating": 70
+							},
+							{
+								"skill": "JavaScript",
+								"rating": 60
+							},
+							{
+								"skill": "PHP",
+								"rating": 60
+							},
+							{
+								"skill": "GIMP",
+								"rating": 80
+							},
+							{
+								"skill": "Photoshop",
+								"rating": 80
+							}
+						]
+					},
+					{
+						"timeframe": "Jun 2009 - Mar 2014",
+						"position": "Student (Other Skills)",
+						"company": "MSU-IIT",
+						"skills": [
+							{
+								"skill": "Flash",
+								"rating": 85
+							},
+							{
+								"skill": "C/C++",
+								"rating": 60
+							},
+							{
+								"skill": "Erlang",
+								"rating": 60
+							}
+						]
+					}]
+				}
+			}
+		});
+	</script>
+</dom-module>

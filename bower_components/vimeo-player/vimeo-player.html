@@ -1,0 +1,397 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+
+<!--
+`vimeo-player` allow you to embed videos from vimeo.com
+
+    <vimeo-player videoId="123456789"></vimeo-player>
+
+You can specify `height` or `width` or be mobile friendly and use `responsive` instead
+
+@element vimeo-player
+@status beta
+@homepage http://kappuccino.github.io/vimeo-player
+-->
+
+<dom-module id="vimeo-player">
+  <style>
+  .embed-container{
+    display: block;
+    position: relative;
+    padding-bottom: 56.25%;
+    overflow: hidden;
+    max-width: 100%;
+    height: auto !important;
+  }
+
+  .embed-container iframe,
+  .embed-container object,
+  .embed-container embed{
+    border: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  p{
+    text-align: center;
+  }
+  </style>
+
+  <template>
+    <div id="wrapper">
+      <iframe
+        src="[[_vimeoUrl]]"
+        width="[[width]]"
+        height="[[height]]"
+        frameborder="[[frameborder]]" webkitAllowFullScreen mozallowfullscreen allowfullscreen>
+      </iframe>
+      <p>[[_caption]]</p>
+    </div>
+
+    <iron-ajax id="vimeoAPI" auto
+               url="[[_vimeoAPIUrl]]"
+               handle-as="json"
+               on-response="handleResponse">
+    </iron-ajax>
+  </template>
+
+  <script>
+    Polymer({
+      is: "vimeo-player",
+      /**
+       * Fired when the player get the response from Vimeo API
+       *
+       * You received the raw event triggered from the Polymer element (check the demo,
+       * to deal with the Vimeo response object.
+       *
+       * @event vimeo-player-response
+       */
+
+
+
+      properties: {
+        /**
+         * The ID of the video. For exemple.
+         *
+         * This is actually the only thing you have to define yourself
+         *
+         * @attribute videoId
+         * @type string
+         */
+        videoId: {
+          type: String,
+          value: '287384'
+        },
+
+        /**
+         * An optional unique id for the player that will be passed back with all Javascript API responses.
+         *
+         * @attribute player_id
+         * @type string
+         */
+        player_id: {
+          type: String,
+          value: ''
+        },
+
+        /**
+         * Show the user’s portrait on the video.
+         *
+         * @attribute portrait
+         * @type number
+         * @default 1
+         */
+        portrait: {
+          type: Number,
+          value: 0
+        },
+
+        /**
+         * Specify the color of the video controls. Defaults to 00adef. Make sure that you don’t include the #.
+         *
+         * @attribute color
+         * @type number
+         * @default 0
+         */
+        color: {
+          type: String,
+          value: '00adef'
+        },
+
+        /**
+         * Play the video automatically on load. Defaults to 0. Note that this won’t work on some devices.
+         *
+         * @attribute autoplay
+         * @type number
+         * @default 0
+         */
+        autoplay: {
+          type: Number,
+          value: 0
+        },
+
+        /**
+         * Define if the player make a loop or not
+         *
+         * @attribute loop
+         * @type number
+         * @default 0
+         */
+        loop: {
+          type: Number,
+          value: 0
+        },
+
+        /**
+         * Display or not the title of the video. Vimeo PLUS users have power to force this value
+         *
+         * @attribute title
+         * @type number
+         */
+        title: {
+          type: String,
+          value: ''
+        },
+
+        /**
+         * Show the user’s byline on the video.
+         *
+         * @attribute width
+         * @type number
+         */
+        byline: {
+          type: String,
+          value: ''
+        },
+
+        /**
+         * Show the user’s byline on the video.
+         *
+         * @attribute width
+         * @type number
+         */
+        api: {
+          type: String,
+          value: ''
+        },
+
+        /**
+         * The Width value of the iframe, if `responsive` is on the value will not be used
+         *
+         * @attribute width
+         * @type number
+         * @default 550
+         */
+        width: {
+          type: String,
+          value: '',
+          observer: '_setMyWidth'
+        },
+
+        /**
+         * The Height value of the iframe, if `responsive` is on the value will not be used
+         *
+         * @attribute height
+         * @type number
+         * @default 300
+         */
+        height: {
+          type: String,
+          value: '',
+          observer: '_setMyHeight'
+        },
+
+        /**
+         * Control the border width of the frame
+         *
+         * @attribute frameborder
+         * @type number
+         * @default 0
+         */
+        frameborder: {
+          type: Number,
+          value: 0
+        },
+
+        /**
+         * Toggle the responsiveness of the player
+         *
+         * @attribute responsive
+         * @type number
+         * @default 0
+         */
+        responsive: {
+          type: Number,
+          value: 0
+        },
+
+        /**
+         * The caption displayed below the video
+         *
+         * @attribute caption
+         * @type string
+         */
+        caption: {
+          type: String,
+          value: ''
+        },
+
+        playerOrigin: {
+          type: String,
+          value: '*'
+        },
+
+        _vimeoUrl: {
+          type: String,
+          // NOTE: these arguments correlate to the _computedVimeoUrl function intake EXACTLY. do not change the order
+          computed: '_computedVimeoUrl(videoId, portrait, color, title, byline, autoplay, loop, api, player_id)'
+        },
+
+        _vimeoAPIUrl: {
+          type: String,
+          computed: '_computedVimeoAPIUrl(videoId)'
+        },
+
+        played: {
+          type: Boolean,
+          value: false
+        },
+
+        state: {
+          type: Number,
+          value: -1
+        }
+      },
+
+      get player() {
+        return this.$$('iframe');
+      },
+
+      _computedVimeoUrl: function(){
+        var args = Array.prototype.slice.call(arguments),
+          attrs = ['portrait','color','title','byline','autoplay','loop','api','player_id']
+        url = "//player.vimeo.com/video/"
+        url += args.shift()
+        url += "?"
+
+        args.map(function(property, i){
+          url += attrs[i]+"="+property+"&"
+        })
+
+        return url
+      },
+
+      _computedVimeoAPIUrl: function( videoid ){
+        return "http://vimeo.com/api/v2/video/"+videoid+".json"
+      },
+
+      _post: function(action, value) {
+        var data = {
+          method: action
+        };
+        
+        if (value) {
+            data.value = value;
+        }
+        
+        var message = JSON.stringify(data);
+        this.player.contentWindow.postMessage(message, this.playerOrigin);
+      },
+
+      play: function(){
+        this._post('play');
+      },
+
+      pause: function(){
+        this._post('pause');
+      },
+
+      _vimeoReady: function(){
+        this._post('addEventListener', 'pause');
+        this._post('addEventListener', 'finish');
+        this._post('addEventListener', 'play');
+      },
+
+      _onMessageReceived: function(event) {
+        // Handle messages from the vimeo player only
+        if (!(/^https?:\/\/player.vimeo.com/).test(event.origin)) {
+            return false;
+        }
+        
+        /*if (this.playerOrigin === '*') {
+            this.playerOrigin = event.origin;
+        }*/
+        
+        var data = JSON.parse(event.data);
+        //console.log('vimeo state: '+data.event);
+        switch (data.event) {
+            case 'ready':
+                this._vimeoReady();
+                this.fire('vimeo-player-ready');
+                //onReady();
+                break;
+            case 'play':
+                this.state = 1;
+                this.played = true;
+                this.fire('play');
+                break;
+
+            case 'pause':
+                //onPause();
+                this.state = 2;
+                this.played = false;
+                this.fire('pause');
+                break;
+
+            case 'finish':
+                this.state = 0;
+                this.fire('finish');
+                break;
+               
+            case 'playProgress':
+                //onPlayProgress(data.data);
+                break;    
+        }
+        this.fire('vimeo-player-state-change');
+      },
+
+      ready: function(){
+        // If both height and width ares missing, be responsive
+        if( !this.height && !this.width ){
+          this.responsive = 1
+        }
+
+        // If the player is responsive, add the .embed-container class
+        if( this.responsive ){
+          this.$.wrapper.className = 'embed-container'
+        }
+      },
+
+      _listenToIframe: function(){
+        if (window.addEventListener) {
+          window.addEventListener('message', this._onMessageReceived.bind(this), false);
+        } else {
+          window.attachEvent('onmessage', this._onMessageReceived.bind(this), false);
+        }
+      },
+
+      handleResponse: function(event, vdata, raw){
+        vdata = vdata.response
+        if( !vdata || (vdata.length < 1) || !vdata[0] ){
+          return
+        }
+        this._listenToIframe();
+        this.fire('vimeo-player-response', {data: vdata[0]})
+      },
+      _setMyWidth: function(){
+        this.style.width = this.width + 'px';
+      },
+      _setMyHeight: function(){
+        this.style.height = this.height + 'px';
+      }
+    })
+  </script>
+</dom-module>

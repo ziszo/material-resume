@@ -1,0 +1,124 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="info-container">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+
+			.category {
+				float: left;
+				width: 100%;
+				padding: 25px 0;
+				box-sizing: border-box;
+				text-align: right;
+				font-size: 12px;
+			}
+			.category:not(:nth-child(1)) {
+				border-top: 1px solid var(--divider-color);
+			}
+			.title {
+				text-transform: uppercase;
+				margin-bottom: 7px;
+			}
+			.title, .ftitle {
+				color: var(--dark-accent-color);
+				font-weight: bold;
+			}
+			.row {
+				float: right;
+				width: 100%;
+				height: auto;
+				margin: 2px 0;
+			}
+			.field, .ftitle {
+				float: right;
+			}
+			.field {
+				width: 70%;
+			}
+			.ftitle {
+				width: 30%;
+			}
+		</style>
+
+		<template is="dom-repeat" items="{{myinfo}}">
+			<div class="category">
+				<div class="title"> {{item.title}} </div>
+
+				<template is="dom-repeat" items="{{item.moreinfo}}" as="infofields">
+					<div class="row">
+						<div class="ftitle"> {{infofields.type}} </div>
+						<div class="field"> {{infofields.field}} </div>
+					</div>
+				</template>
+			</div>
+		</template>
+		
+	</template>
+	<script>
+		Polymer({
+			is: 'info-container',
+			properties: {
+				myinfo: {
+					type: Array,
+					value: [
+						{
+							"title": "Education",
+							"moreinfo": [
+								{
+									"type": "University",
+									"field": "MSU-IIT"
+								},
+								{
+									"type": "Degree",
+									"field": "BSIT (Multimedia Systems)",
+								},
+								{
+									"type": " Attended ",
+									"field": "June 2009 - March 2014",
+								}
+							]
+						},
+						{
+							"title": "Personal Info",
+							"moreinfo": [
+								{
+									"type": "Birthday",
+									"field": "January 14, 1993"
+								},
+								{
+									"type": "Hometown",
+									"field": "Molave, Zamboanga del Sur"
+								}
+							]
+						},
+						{
+							"title": "Contact Info",
+							"moreinfo": [
+								{
+									"type": "Mobile",
+									"field": "09062093283 / 09994065667"
+								},
+								{
+									"type": "Email",
+									"field": "ziszo.angelo@gmail.com"
+								}
+							]
+						},
+						{
+							"title": "Know More",
+							"moreinfo": [
+								{
+									"type": "About.me",
+									"field": "about.me/ziszo"
+								}
+							]
+						}
+					]
+				}
+			}
+		});
+	</script>
+</dom-module>
